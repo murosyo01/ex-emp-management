@@ -40,12 +40,13 @@
           <div class="well">
             <!-- ここから上を編集する必要はありません -->
 
-            <form method="post" action="../employee/list.html" th:action = "@{/login}" th:object = "${loginForm}">
+            <form method="post" action="../employee/list.html" th:action="@{/login}" th:object="${loginForm}">
               <fieldset>
                 <legend>ログイン</legend>
                 <div class="form-group">
                   <div class="alert alert-danger">
-                    <p>メールアドレスまたはパスワードが間違っています</p>
+                    <p th:if = "${result == false}">メールアドレスまたはパスワードが間違っています</p>
+                    <p th:unless = "${result == false}">メールアドレスとパスワードを入力してください</p>
                   </div>
                 </div>
                 <div class="form-group">

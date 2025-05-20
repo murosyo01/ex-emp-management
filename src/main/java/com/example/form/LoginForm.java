@@ -1,7 +1,12 @@
 package com.example.form;
 
+/**
+ * ログイン情報を受け取るフォーム
+ */
 public class LoginForm {
+    /** メアド */
     private String mailAddress;
+    /** パスワード */
     private String password;
 
     public String getMailAddress() {
