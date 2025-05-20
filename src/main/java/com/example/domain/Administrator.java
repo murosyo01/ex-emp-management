@@ -1,9 +1,16 @@
 package com.example.domain;
 
+/**
+ * 管理者情報を表すドメインクラス.
+ */
 public class Administrator {
+    /** ID */
     private Integer id;
+    /** 名前 */
     private String name;
+    /** メアド */
     private String mailAddress;
+    /** パスワード */
     private String password;
 
     public Integer getId() {

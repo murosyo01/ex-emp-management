@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+/**
+ * 管理者情報を操作するコントローラ.
+ */
 @Controller
 @RequestMapping("/")
 public class AdministratorController {
@@ -22,23 +25,22 @@ public class AdministratorController {
     @Autowired
     private HttpSession session;
 
-    @GetMapping("/")
-    public String toLogin(LoginForm form, Model model){
-        model.addAttribute("mailAddress", form.getMailAddress());
-        model.addAttribute("password", form.getPassword());
-
-        return "administrator/login";
-    }
-
+    /**
+     * 管理者登録画面の表示.
+     * @param form フォーム
+     * @return 管理者登録画面
+     */
     @GetMapping("/toInsert")
-    public String toInsert(InsertAdministratorForm form, Model model){
-        model.addAttribute("name" , form.getName());
-        model.addAttribute("mailAddress", form.getMailAddress());
-        model.addAttribute("password", form.getPassword());
-
+    public String toInsert(InsertAdministratorForm form){
         return "administrator/insert.html";
     }
 
+    /**
+     * 管理者登録処理
+     * @param form フォーム
+     * @param model モデル
+     * @return ログイン画面
+     */
     @PostMapping("/insert")
     public String insert(InsertAdministratorForm form, Model model){
         Administrator administrator = new Administrator();
@@ -48,19 +50,32 @@ public class AdministratorController {
 
         administratorService.insert(administrator);
 
-        model.addAttribute("mailAddress", form.getMailAddress());
-        model.addAttribute("password", form.getPassword());
-        model.addAttribute("administrator", administrator);
-
         return "redirect:/";
     }
 
+    /**
+     * ログイン画面を表示する.
+     *
+     * @param form ログイン情報を保持するフォーム
+     * @return ログイン画面
+     */
+    @GetMapping("/")
+    public String toLogin(LoginForm form){
+        return "administrator/login";
+    }
+
+    /**
+     * ログイン処理
+     * @param form フォーム
+     * @param model モデル
+     * @return ログインに成功→雇用者リスト、
+     */
     @PostMapping("/login")
     public String login(LoginForm form, Model model){
         Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
 
         if(administrator == null){
-            model.addAttribute("message", "メールアドレスまたはパスワードが不正です。");
+            model.addAttribute("result", false);
             return "/";
         }
 
@@ -69,6 +84,10 @@ public class AdministratorController {
         return "redirect:/employee/showList";
     }
 
+    /**
+     * ログアウト機能.
+     * @return ログイン画面
+     */
     @GetMapping("/logout")
     public String logout(){
         session.invalidate();

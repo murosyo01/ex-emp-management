@@ -9,11 +9,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 
+/**
+ * employeesテーブルを操作するリポジトリ.
+ */
 @Repository
 public class EmployeeRepository {
     private static final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = (rs, i) -> {
@@ -37,6 +37,10 @@ public class EmployeeRepository {
     @Autowired
     private NamedParameterJdbcTemplate template;
 
+    /**
+     * 雇用者を全て検索する
+     * @return 雇用者リスト
+     */
     public List<Employee> findAll(){
         String sql = "SELECT * FROM employees ORDER BY hire_date DESC;";
         List<Employee> employeeList = template.query(sql, EMPLOYEE_ROW_MAPPER);
@@ -47,6 +51,11 @@ public class EmployeeRepository {
         return employeeList;
     }
 
+    /**
+     * IDを基に雇用者を検索する
+     * @param id 雇用者ID
+     * @return 雇用者オブジェクト
+     */
     public Employee findById(Integer id){
         String sql = "SELECT * FROM employees WHERE id = :id;";
         SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
@@ -56,6 +65,10 @@ public class EmployeeRepository {
         return employee;
     }
 
+    /**
+     * 雇用者情報を更新する
+     * @param employee 雇用者オブジェクト
+     */
     public void update(Employee employee){
         SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
 
