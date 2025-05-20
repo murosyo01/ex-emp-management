@@ -3,6 +3,8 @@ package com.example.controller;
 import com.example.domain.Administrator;
 import com.example.form.InsertAdministratorForm;
 import com.example.form.LoginForm;
+import com.example.service.AdministratorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/administrator")
 public class AdministratorController {
+
+    @Autowired
+    private AdministratorService service;
 
     @GetMapping("/")
     public String toLogin(LoginForm form){
@@ -25,7 +30,7 @@ public class AdministratorController {
         administrator.setMailAddress(form.getMailAddress());
         administrator.setPassword(form.getPassword());
 
-
+        service.insert(administrator);
 
         model.addAttribute("mailAddress", form.getMailAddress());
         model.addAttribute("password", form.getPassword());
