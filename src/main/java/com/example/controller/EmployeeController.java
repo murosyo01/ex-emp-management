@@ -51,4 +51,5 @@ public class EmployeeController {
 
         return "employee/detail";
     }
+
 }
