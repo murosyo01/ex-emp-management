@@ -12,15 +12,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/administrator")
+@RequestMapping("/")
 public class AdministratorController {
 
     @Autowired
     private AdministratorService service;
 
     @GetMapping("/")
-    public String toLogin(LoginForm form){
-        return "login";
+    public String toLogin(LoginForm form, Model model){
+        model.addAttribute("mailAddress", form.getMailAddress());
+        model.addAttribute("password", form.getPassword());
+
+        return "administrator/login";
+    }
+
+    @GetMapping("/toInsert")
+    public String toInsert(InsertAdministratorForm form, Model model){
+        model.addAttribute("name" , form.getName());
+        model.addAttribute("mailAddress", form.getMailAddress());
+        model.addAttribute("password", form.getPassword());
+
+        return "administrator/insert.html";
     }
 
     @PostMapping("/insert")
@@ -34,7 +46,7 @@ public class AdministratorController {
 
         model.addAttribute("mailAddress", form.getMailAddress());
         model.addAttribute("password", form.getPassword());
-//        model.addAttribute("administrator", administrator);
+        model.addAttribute("administrator", administrator);
 
         return "redirect:/administrator/";
     }
