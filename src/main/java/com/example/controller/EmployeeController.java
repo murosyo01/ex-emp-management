@@ -38,17 +38,15 @@ public class EmployeeController {
 
         model.addAttribute("employee", employee);
 
-//        model.addAttribute("name", form.getName());
-//        model.addAttribute("image", form.getImage());
-//        model.addAttribute("gender", form.getGender());
-//        model.addAttribute("mailAddress", form.getMailAddress());
-//        model.addAttribute("zipCode", form.getZipCode());
-//        model.addAttribute("address", form.getAddress());
-//        model.addAttribute("telephone", form.getTelephone());
-//        model.addAttribute("salary", form.getSalary());
-//        model.addAttribute("characteristics", form.getCharacteristics());
-//        model.addAttribute("dependentsCount", form.getDependentsCount());
-
         return "employee/detail";
+    }
+
+    @PostMapping("/update")
+    public String update(UpdateEmployeeForm form){
+        Employee employee = employeeService.showDetail(form.getId());
+        employee.setDependentsCount(form.getDependentsCount());
+        employeeService.update(employee);
+
+        return "redirect:/employee/showList";
     }
 }
