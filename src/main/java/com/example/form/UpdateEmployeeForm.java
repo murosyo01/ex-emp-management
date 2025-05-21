@@ -1,5 +1,8 @@
 package com.example.form;
 
+import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -9,26 +12,43 @@ public class UpdateEmployeeForm {
     /** ID */
     private Integer id;
     /** 名前 */
+    @NotNull(message = "名前は必須です。")
+    @NotBlank(message = "名前を空文字にはできません。")
     private String name;
     /** 写真 */
     private String image;
     /** 性別 */
+    @NotBlank(message = "性別の入力は必須です。")
     private String gender;
     /** 入社日 */
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "入社日の入力は必須です。")
     private Date hireDate;
     /** メアド */
+    @NotBlank(message = "メールアドレスは必須です。")
+    @Email(message = "メールアドレスの形式が正しくありません。")
     private String mailAddress;
     /** 郵便番号 */
+    @Pattern(regexp = "\\d{3}-\\d{4}",
+            message = "郵便番号は ○○○-○○○○ の形式である必要があります。")
     private String zipCode;
     /** 住所 */
+    @NotBlank(message = "住所の入力は必須です。")
     private String address;
     /** 携帯番号 */
+    @Pattern(regexp = "\\d{2,4}-\\d{2,4}-\\d{4}",
+            message = "電話番号は ○○○-○○○○-○○○○ の形式である必要があります。")
     private String telephone;
     /** 給料 */
+    @NotNull(message = "給料の入力は必須です。")
+    @Min(0)
     private Integer salary;
     /** 特性 */
+    @NotBlank(message = "特性を空文字にはできません。")
     private String characteristics;
     /** 扶養人数 */
+    @NotNull(message = "扶養人数の入力は必須です。")
+    @Min(0)
     private Integer dependentsCount;
 
     public Integer getId() {
