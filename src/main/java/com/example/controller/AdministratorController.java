@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,7 @@ public class AdministratorController {
      * @return 管理者登録画面
      */
     @GetMapping("/toInsert")
-    public String toInsert(InsertAdministratorForm form){
+    public String toInsert(InsertAdministratorForm form, Model model){
         return "administrator/insert.html";
     }
 
@@ -42,7 +44,10 @@ public class AdministratorController {
      * @return ログイン画面
      */
     @PostMapping("/insert")
-    public String insert(InsertAdministratorForm form, Model model){
+    public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model){
+        if (result.hasErrors()){
+            return toInsert(form, model);
+        }
         Administrator administrator = new Administrator();
         administrator.setName(form.getName());
         administrator.setMailAddress(form.getMailAddress());
