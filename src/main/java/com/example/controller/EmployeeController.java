@@ -3,14 +3,22 @@ package com.example.controller;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +59,10 @@ public class EmployeeController {
     public String showDetail(String id, Model model, UpdateEmployeeForm form){
         Employee employee = employeeService.showDetail(Integer.parseInt(id));
 
+        BeanUtils.copyProperties(employee, form);
+
         model.addAttribute("employee", employee);
+
 
         return "employee/detail";
     }
@@ -62,8 +73,24 @@ public class EmployeeController {
      * @return 雇用者リスト
      */
     @PostMapping("/update")
-    public String update(UpdateEmployeeForm form){
+    public String update(@Validated UpdateEmployeeForm form, BindingResult result, Model model) {
+        if (result.hasErrors()){
+            model.addAttribute("employee", employeeService.showDetail(form.getId()));
+            return showDetail(String.valueOf(form.getId()), model, form);
+        }
         Employee employee = employeeService.showDetail(form.getId());
+        employee.setName(form.getName());
+        if(!form.getImage().isEmpty()){
+            employee.setImage(form.getImage());
+        }
+        employee.setGender(form.getGender());
+        employee.setHireDate(form.getHireDate());
+        employee.setMailAddress(form.getMailAddress());
+        employee.setZipCode(form.getZipCode());
+        employee.setAddress(form.getAddress());
+        employee.setTelephone(form.getTelephone());
+        employee.setSalary(form.getSalary());
+        employee.setCharacteristics(form.getCharacteristics());
         employee.setDependentsCount(form.getDependentsCount());
         employeeService.update(employee);
 

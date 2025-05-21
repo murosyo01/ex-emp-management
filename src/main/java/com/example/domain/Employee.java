@@ -2,33 +2,18 @@ package com.example.domain;
 
 import java.util.Date;
 
-/**
- * 雇用者情報を表すドメインクラス.
- */
 public class Employee {
-    /** ID */
     private Integer id;
-    /** 名前 */
     private String name;
-    /** 写真 */
     private String image;
-    /** 性別 */
     private String gender;
-    /** 入社日 */
     private Date hireDate;
-    /** メアド */
     private String mailAddress;
-    /** 郵便番号 */
     private String zipCode;
-    /** 住所 */
     private String address;
-    /** 携帯番号 */
     private String telephone;
-    /** 給料 */
     private Integer salary;
-    /** 特性 */
     private String characteristics;
-    /** 扶養人数 */
     private Integer dependentsCount;
 
     public Integer getId() {
